@@ -1,0 +1,6 @@
+.aws/
+*.pem
+*.ppk
+.DS_Store
+*.tar.gz
+*.zip
