@@ -58,6 +58,8 @@ Local Machine → Bastion Host (Public Subnet) → Private Web Servers
 | CIDR Block | 10.0.0.0/16 |
 | Region | ap-south-1 (Mumbai) |
 
+![VPC](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/vpc.png)
+
 ### Subnet Configuration
 
 | Subnet | Availability Zone | CIDR Block | Type |
@@ -67,6 +69,16 @@ Local Machine → Bastion Host (Public Subnet) → Private Web Servers
 | Private-Subnet-1 | ap-south-1a | 10.0.3.0/24 | 🔴 Private |
 | Private-Subnet-2 | ap-south-1b | 10.0.4.0/24 | 🔴 Private |
 
+![Subnets](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/subnets.png)
+
+### Internet Gateway
+
+![Internet Gateway](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/ig_gateway.png)
+
+### NAT Gateway
+
+![NAT Gateway](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/Nat_gateway.png)
+
 ### Route Tables
 
 | Route Table | Destination | Target |
@@ -74,26 +86,25 @@ Local Machine → Bastion Host (Public Subnet) → Private Web Servers
 | Public | 0.0.0.0/0 | Internet Gateway |
 | Private | 0.0.0.0/0 | NAT Gateway |
 
+![Route Tables](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/route_table.png)
+
+---
+
+## 💻 EC2 Instances
+
+![EC2 Instances](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/instances_autoscale.png)
+
 ---
 
 ## 🔒 Security Configuration
 
-### Bastion Host Security Group
-
-| Rule | Port | Source |
-|---|---|---|
-| SSH | 22 | My Public IP only |
-
-### Web Server Security Group
-
-| Rule | Port | Source |
-|---|---|---|
-| SSH | 22 | Bastion Security Group |
-| HTTP | 80 | ALB Security Group |
-
 > ✅ Private instances have no public IP addresses
 > ✅ SSH access only through Bastion Host
 > ✅ Internet traffic only through ALB
+
+### NAT Gateway Connectivity Test — Private Instance Pinging Google
+
+![Ping Test](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/ping.png)
 
 ---
 
@@ -108,6 +119,16 @@ Local Machine → Bastion Host (Public Subnet) → Private Web Servers
 | Availability Zones | ap-south-1a, ap-south-1b |
 | Health Check Path | / |
 
+![Load Balancer](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/load_balancer.png)
+
+### Target Group — 2/2 Healthy
+
+![Target Group](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/target_group.png)
+
+### Launch Template
+
+![Launch Template](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/launch_template.png)
+
 ### Auto Scaling Group
 
 | Setting | Value |
@@ -117,6 +138,12 @@ Local Machine → Bastion Host (Public Subnet) → Private Web Servers
 | Maximum Instances | 4 |
 | Scaling Metric | CPU Utilisation |
 | Scale-out Threshold | 60% |
+
+![Auto Scaling Group](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/auto_scaling.png)
+
+### 🌐 Web Application Live via ALB
+
+![Web App Live](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/Screenshot_2026-05-20_133743.png)
 
 ---
 
@@ -133,6 +160,12 @@ sudo blkid
 sudo mount -a
 ```
 
+![EBS Volume](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/EBS_volume.png)
+
+### EBS Volume Mounted Successfully
+
+![EBS Mounted](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/mounted.png)
+
 ### S3 Backup
 
 ```bash
@@ -141,6 +174,16 @@ aws s3 cp backup.tar.gz s3://buck2128/
 aws s3 cp /var/log/httpd/access_log s3://buck2128/
 aws s3 ls s3://buck2128/
 ```
+
+![S3 Backup Commands](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/backup.png)
+
+![S3 Bucket](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/s3_backup.png)
+
+---
+
+## 🌐 Web Server Running
+
+![Web Server](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/webserver.png)
 
 ---
 
@@ -151,6 +194,24 @@ aws-ha-webapp/
 ├── README.md
 ├── diagrams/
 │   └── architecture.png
+├── Screenshots/
+│   ├── vpc.png
+│   ├── subnets.png
+│   ├── ig_gateway.png
+│   ├── Nat_gateway.png
+│   ├── route_table.png
+│   ├── instances_autoscale.png
+│   ├── launch_template.png
+│   ├── auto_scaling.png
+│   ├── load_balancer.png
+│   ├── target_group.png
+│   ├── EBS_volume.png
+│   ├── mounted.png
+│   ├── s3_backup.png
+│   ├── backup.png
+│   ├── webserver.png
+│   ├── ping.png
+│   └── stress.png
 ├── scripts/
 │   ├── webserver_setup.sh
 │   ├── userdata.sh
@@ -169,6 +230,10 @@ aws-ha-webapp/
 sudo dnf install stress -y
 stress --cpu 2 --timeout 300
 ```
+
+![Stress Test](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/stress.png)
+
+![ASG Activity](https://raw.githubusercontent.com/Eldho2827/aws-ha-webapp/main/Screenshots/Screenshot_2026-05-20_134123.png)
 
 | Result | Status |
 |---|---|
