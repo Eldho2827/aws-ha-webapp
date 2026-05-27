@@ -93,7 +93,7 @@ ProblemSolutionEBS volume not detectedVerified with lsblk before formattingSSH t
 
 👤 Author
 Eldho Sabu
-AWS DevOps Learner | ap-south-1 (Mumbai)
+AWS DevOps Learner | IT Graduate | ap-south-1 (Mumbai)
 Show Image
 Show Image
 
